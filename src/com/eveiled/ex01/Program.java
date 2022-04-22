@@ -44,9 +44,7 @@ class ConsumerThread extends Thread {
     public void run() {
         for (int i = 0; i < number; i++) {
             try {
-                //System.out.print(i + " ");
                 pc.produce(creature);
-                //sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -70,7 +68,6 @@ class ProduserRunnable implements Runnable{
     public void run() {
         for (int i = 0; i < number; i++) {
             try {
-                //System.out.print(i + " ");
                 pc.consume(creature);
                 sleep(100);
             } catch (InterruptedException e) {
