@@ -1,16 +1,15 @@
 package com.eveiled.ex03;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 public class Program {
 
-    static String PATH_TO_FILE_WITH_URLS = "files_urls.txt";
+    static final String PATH_TO_FILE_WITH_URLS = "files_urls.txt";
+    static final String PATH_TO_CURRENT_DIR = "src/com/eveiled/ex03/";
 
     public static void main(String[] args) {
 
@@ -20,7 +19,6 @@ public class Program {
             System.exit(1);
         }
         String[] urls = parseURLS();
-        //Arrays.stream(urls).forEach(System.out::println);
 
         ExecutorService executorService = Executors.newFixedThreadPool(threadsCount,  new ThreadFactory() {
             int i = 1;
@@ -62,7 +60,7 @@ public class Program {
 
         StringBuilder stringBuilder = new StringBuilder();
         String[] urls = null;
-        File file = new File(PATH_TO_FILE_WITH_URLS);
+        File file = new File(PATH_TO_CURRENT_DIR + PATH_TO_FILE_WITH_URLS);
         if (!file.exists()){
             System.out.println("File with urls doesnt exists");
             System.exit(1);
@@ -94,10 +92,13 @@ public class Program {
 
         nameOfArguments = "--" + nameOfArguments + "=";
 
+        try{
         for (String arg: args) {
             if (arg.contains(nameOfArguments)){
                 parsed = arg.split("=")[1];
             }
+        }}catch (ArrayIndexOutOfBoundsException e){
+            parsed = null;
         }
         if (parsed != null){
             ans = Integer.parseInt(parsed);
@@ -107,7 +108,7 @@ public class Program {
 
     private static void donwloadFile(String url) throws IOException {
 
-        String filename =  url.substring(url.lastIndexOf("/") + 1);
+        String filename =  PATH_TO_CURRENT_DIR + url.substring(url.lastIndexOf("/") + 1);
         FileOutputStream fout = new FileOutputStream(filename);
         BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
         byte data[] = new byte[1024];
